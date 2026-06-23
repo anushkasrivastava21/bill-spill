@@ -9,8 +9,9 @@ export default function ExpenseForm() {
 
   async function handleSubmit(event) {
     event.preventDefault()
+    const form = event.currentTarget
     setLoading(true)
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(form)
     
     const result = await addPersonalExpense(formData)
     
@@ -18,14 +19,14 @@ export default function ExpenseForm() {
       toast.error(result.error)
     } else {
       toast.success('Expense saved successfully!')
-      event.currentTarget.reset()
+      form.reset()
     }
     setLoading(false)
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end w-full">
-      <div className="flex flex-col gap-xs w-full md:w-1/3">
+      <div className="flex flex-col gap-1 w-full md:w-1/3">
         <label className="font-label-md text-on-surface-variant text-sm">Expense Name</label>
         <div className="relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">edit</span>
@@ -33,7 +34,7 @@ export default function ExpenseForm() {
         </div>
       </div>
       
-      <div className="flex flex-col gap-xs w-full md:w-1/4">
+      <div className="flex flex-col gap-1 w-full md:w-1/4">
         <label className="font-label-md text-on-surface-variant text-sm">Amount ₹</label>
         <div className="relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">payments</span>
@@ -41,12 +42,12 @@ export default function ExpenseForm() {
         </div>
       </div>
       
-      <div className="flex flex-col gap-xs w-full md:w-1/4">
+      <div className="flex flex-col gap-1 w-full md:w-1/4">
         <label className="font-label-md text-on-surface-variant text-sm">Category</label>
         <div className="relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">category</span>
-          <select name="category" required className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none appearance-none cursor-pointer">
-            <option value="" disabled selected>Select...</option>
+          <select name="category" defaultValue="" required className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none appearance-none cursor-pointer">
+            <option value="" disabled>Select...</option>
             <option value="Food">Food & Dining</option>
             <option value="Transport">Transport</option>
             <option value="Utilities">Bills & Utilities</option>
@@ -56,7 +57,7 @@ export default function ExpenseForm() {
         </div>
       </div>
 
-      <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-sm pressable shadow-md h-[42px] disabled:opacity-70 flex-shrink-0">
+      <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-3 pressable shadow-md h-[42px] disabled:opacity-70 flex-shrink-0">
         {loading ? (
           <>
             <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>

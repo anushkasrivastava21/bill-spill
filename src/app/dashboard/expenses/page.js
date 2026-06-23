@@ -25,14 +25,14 @@ export default async function ExpensesPage() {
   const avg = count > 0 ? (totalSpent / count).toFixed(2) : 0
 
   return (
-    <div className="flex flex-col gap-md">
-      <div className="flex items-center gap-sm mb-sm">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-3 mb-3">
         <span className="material-symbols-outlined text-primary text-3xl">payments</span>
         <h2 className="font-title-md text-title-md text-on-surface">My Expenses</h2>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-sm md:gap-md">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
         <div className="glass-card rounded-xl p-4 flex flex-col gap-1">
           <span className="font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Total Spent</span>
           <span className="font-display-lg text-2xl text-primary font-bold">₹{totalSpent.toLocaleString()}</span>
@@ -52,7 +52,7 @@ export default async function ExpensesPage() {
       </div>
 
       {/* Entry Form */}
-      <div className="glass-card rounded-xl p-md mt-4 wave-pattern">
+      <div className="glass-card rounded-xl p-6 mt-4 wave-pattern">
         <h3 className="font-title-md text-lg text-on-surface mb-4">New Expense</h3>
         <ExpenseForm />
       </div>

@@ -99,7 +99,7 @@ export default async function GroupDetailsPage({ params }) {
   }
 
   return (
-    <div className="flex flex-col gap-md">
+    <div className="flex flex-col gap-6">
       {/* Header */}
       <div className="flex items-center gap-4 mb-2">
         <Link href="/dashboard/groups" className="p-2 rounded-full hover:bg-surface-container-high transition-colors">
@@ -114,11 +114,11 @@ export default async function GroupDetailsPage({ params }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-md">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column (Expenses & Forms) */}
-        <div className="lg:col-span-2 flex flex-col gap-md">
+        <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Add Expense Form */}
-          <div className="glass-card rounded-xl p-md wave-pattern">
+          <div className="glass-card rounded-xl p-6 wave-pattern">
             <h3 className="font-title-md text-lg text-on-surface mb-4">Log a Group Expense</h3>
             <AddExpenseForm groupId={groupId} />
           </div>
@@ -142,7 +142,7 @@ export default async function GroupDetailsPage({ params }) {
                       <div className="flex flex-col">
                         <span className="font-title-md text-on-surface">{exp.description}</span>
                         <span className="font-label-sm text-on-surface-variant text-xs">
-                          Paid by {usersMap[exp.paid_by_user]?.name} • {new Date(exp.date).toLocaleDateString()}
+                          Paid by {usersMap[exp.paid_by_user]?.name} • {new Date(exp.date).toLocaleDateString('en-US')}
                         </span>
                       </div>
                     </div>
@@ -157,9 +157,9 @@ export default async function GroupDetailsPage({ params }) {
         </div>
 
         {/* Right Column (Settlements & Members) */}
-        <div className="flex flex-col gap-md">
+        <div className="flex flex-col gap-6">
           {/* Settlements */}
-          <div className="glass-card rounded-xl p-md bg-gradient-to-br from-surface to-surface-container-high border-secondary/20">
+          <div className="glass-card rounded-xl p-6 bg-gradient-to-br from-surface to-surface-container-high border-secondary/20">
             <h3 className="font-title-md text-lg text-on-surface mb-4 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">handshake</span>
               Settlements
@@ -183,7 +183,7 @@ export default async function GroupDetailsPage({ params }) {
           </div>
 
           {/* Members */}
-          <div className="glass-card rounded-xl p-md">
+          <div className="glass-card rounded-xl p-6">
             <h3 className="font-title-md text-lg text-on-surface mb-4">Crew Members</h3>
             <div className="flex flex-col gap-3 mb-4">
               {users?.map(u => (

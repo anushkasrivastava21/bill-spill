@@ -52,7 +52,8 @@ export async function signup(formData) {
     })
     
     if (insertError && !insertError.message.includes('duplicate key')) {
-        return { error: 'Failed to create user profile.' }
+        console.error("Insert Error:", insertError);
+        return { error: `Failed to create user profile: ${insertError.message}` }
     }
   }
 

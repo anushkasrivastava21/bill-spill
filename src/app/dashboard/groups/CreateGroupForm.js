@@ -26,16 +26,16 @@ export default function CreateGroupForm() {
   }
 
   return (
-    <div className="glass-card rounded-xl p-md relative overflow-hidden wave-pattern">
+    <div className="glass-card rounded-xl p-6 relative overflow-hidden wave-pattern">
       <div className="absolute -right-10 -top-10 w-32 h-32 bg-secondary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
-      <div className="flex items-center gap-sm mb-lg z-10 relative">
+      <div className="flex items-center gap-3 mb-10 z-10 relative">
         <span className="material-symbols-outlined text-primary text-3xl">add_circle</span>
         <h2 className="font-title-md text-title-md text-on-surface">Chart a New Course</h2>
       </div>
       
       <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 relative z-10 items-end">
-        <div className="flex flex-col gap-xs flex-1">
-          <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-xs">
+        <div className="flex flex-col gap-1 flex-1">
+          <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
             <span className="material-symbols-outlined text-sm">directions_boat</span>
             Voyage Name
           </label>
@@ -45,7 +45,7 @@ export default function CreateGroupForm() {
           </div>
         </div>
         
-        <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-sm pressable shadow-md ocean-gradient disabled:opacity-70 h-[42px] flex-shrink-0">
+        <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-3 pressable shadow-md ocean-gradient disabled:opacity-70 h-[42px] flex-shrink-0">
           {loading ? (
             <><span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>Creating...</>
           ) : (

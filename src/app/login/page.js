@@ -22,16 +22,16 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-surface-container-low px-4 wave-pattern">
-      <div className="glass-card w-full max-w-md p-lg rounded-2xl flex flex-col gap-md relative">
+      <div className="glass-card w-full max-w-md p-10 rounded-2xl flex flex-col gap-6 relative">
         <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
         
-        <div className="flex flex-col items-center gap-xs z-10 text-center">
+        <div className="flex flex-col items-center gap-1 z-10 text-center">
           <span className="material-symbols-outlined text-primary text-5xl mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>sailing</span>
           <h1 className="font-display-lg text-[28px] text-on-surface">Sign in to your account</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-md mt-4 z-10">
-          <div className="flex flex-col gap-xs">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4 z-10">
+          <div className="flex flex-col gap-1">
             <label className="font-label-md text-on-surface-variant">Email Address</label>
             <input 
               name="email"
@@ -42,7 +42,7 @@ export default function LoginPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-xs">
+          <div className="flex flex-col gap-1">
             <label className="font-label-md text-on-surface-variant">Password</label>
             <input 
               name="password"
@@ -56,7 +56,7 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full mt-2 py-3 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-sm pressable shadow-md ocean-gradient disabled:opacity-70"
+            className="w-full mt-2 py-3 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-3 pressable shadow-md ocean-gradient disabled:opacity-70"
           >
             {loading ? (
               <>

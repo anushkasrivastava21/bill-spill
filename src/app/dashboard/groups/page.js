@@ -30,15 +30,15 @@ export default async function GroupsPage() {
     .in('group_id', groupIds)
 
   return (
-    <div className="flex flex-col gap-md">
-      <div className="flex items-center gap-sm mb-sm">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-3 mb-3">
         <span className="material-symbols-outlined text-primary text-3xl">diversity_3</span>
         <h2 className="font-title-md text-title-md text-on-surface">Active Voyages</h2>
       </div>
 
       <CreateGroupForm />
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {groups.length === 0 && (
           <div className="col-span-full glass-card rounded-xl p-8 flex flex-col items-center justify-center text-on-surface-variant border-dashed">
             <span className="material-symbols-outlined text-4xl mb-2 opacity-50">sailing</span>
@@ -72,7 +72,7 @@ export default async function GroupsPage() {
           }
 
           return (
-            <Link key={group.id} href={`/dashboard/groups/${group.id}`} className="glass-card rounded-xl p-md flex flex-col gap-sm hover:shadow-lg transition-all pressable group relative overflow-hidden">
+            <Link key={group.id} href={`/dashboard/groups/${group.id}`} className="glass-card rounded-xl p-6 flex flex-col gap-3 hover:shadow-lg transition-all pressable group relative overflow-hidden">
               <div className="absolute -right-6 -top-6 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
               
               <div className="flex items-start justify-between z-10">

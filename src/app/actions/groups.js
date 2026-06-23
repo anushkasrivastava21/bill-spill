@@ -18,7 +18,10 @@ export async function createGroup(formData) {
     created_by: user.id
   }).select('id').single()
 
-  if (groupError) return { error: 'Failed to create group' }
+  if (groupError) {
+    console.error("Group Error:", groupError);
+    return { error: `Failed to create group: ${groupError.message}` }
+  }
 
   // 2. Add creator to group_members automatically
   await supabase.from('group_members').insert({

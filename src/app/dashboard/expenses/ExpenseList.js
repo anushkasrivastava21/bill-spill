@@ -49,7 +49,7 @@ export default function ExpenseList({ expenses }) {
             <div className="flex flex-col">
               <span className="font-title-md text-on-surface">{exp.description}</span>
               <div className="flex gap-2 items-center mt-1">
-                <span className="sm:hidden font-label-sm text-xs text-on-surface-variant">{new Date(exp.date).toLocaleDateString()}</span>
+                <span className="sm:hidden font-label-sm text-xs text-on-surface-variant">{new Date(exp.date).toLocaleDateString('en-US')}</span>
                 <span className={`px-2 py-0.5 rounded-full border font-label-sm text-[10px] uppercase tracking-wider ${getCategoryColor(exp.category)}`}>
                   {exp.category}
                 </span>
