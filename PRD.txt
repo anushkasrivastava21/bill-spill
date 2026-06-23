@@ -1,0 +1,213 @@
+Product Requirements Document (PRD): Bill Splitter App
+SECTION 1: EXECUTIVE SUMMARY
+What is the app?
+The Bill Splitter App is a web-based money management tool. It allows individuals to track their personal daily spending and gives groups of friends a simple way to record shared costs and automatically calculate exactly who owes money to whom.
+What problem does it solve?
+Keeping track of shared expenses—like paying for groceries in a shared apartment, booking cabs on a weekend trip, or splitting a restaurant dinner—is socially awkward and mathematically messy. People often forget who paid for what, lose old paper receipts, or struggle to calculate the final settled amounts. This app removes the guesswork and awkward conversations by keeping a clear, transparent ledger that everyone in the group can trust.
+What technology stack is used?
+●	React & Next.js: For building the user interface and handling the multi-page layout.
+●	Supabase: For the live database, safe user login, and secure data storage.
+●	Tailwind CSS: For styling the website so it looks modern, clean, and works well on mobile screens.
+Is every feature real or simulated?
+All features in this application are 100% real and fully functional. There is no fake data or simulated click-throughs; real users sign up, save real numbers into a live database, and get mathematically accurate debt calculations.
+SECTION 2: USER PERSONAS
+Persona 1: The Frustrated Flatmate
+●	Name, age, and location: Kabir, 24 years old, living in Bengaluru, India.
+●	What's their life like? Kabir shares a three-bedroom apartment with two college friends. They all have busy entry-level corporate jobs. They share the cost of the daily milk delivery, a high-speed internet connection, a weekly maid service, and weekend house groceries.
+●	What's their problem? Every month ends in a chaotic group chat argument. Kabir pays for the internet, one roommate pays the maid, and the third buys the groceries. They try to balance it out using messy smartphone notes, but someone always feels like they are paying more than their fair share.
+●	What's their goal with the app? Kabir wants a single "Flatmates" group where anyone can instantly type in a bill the moment they pay it. At the end of the month, he just wants to look at one screen that says "Kabir owes Rohan ₹1,200" so they can settle up in two minutes.
+Persona 2: The Group Vacation Organizer
+●	Name, age, and location: Aisha, 28 years old, living in Mumbai, India.
+●	What's their life like? Aisha loves planning weekend getaways for her college friend group. She is naturally the one who books the resort, rents the car, and buys the highway snacks.
+●	What's their problem? When traveling with seven people, different people pay for different group activities. Trying to collect money via text messages two weeks after the trip feels annoying. Furthermore, some friends joined the trip a day late and shouldn't be charged for the first night's hotel stay.
+●	What's their goal with the app? Aisha wants to create a "Goa Trip" group, invite her six friends, and let everyone add their own receipts as the trip happens. When the trip ends, she wants the app to calculate the absolute fewest number of bank transfers needed so that everyone is paid back instantly.
+SECTION 3: CORE FEATURES
+1.	User Sign Up and Login: Users can create an account securely using their email address and a personal password, and log back in from any device.
+2.	Add Personal Expenses: A private dashboard where users can track their own money. They can log an expense by typing the amount, a short description (e.g., "Morning coffee"), and selecting a category (e.g., Food, Transport, Bills).
+3.	See Your Spending Stats: A quick-glance summary board showing four live numbers: Total spent all-time, Total spent this current month, the total Count of expense entries made, and the Average cost per expense.
+4.	Create Groups: Users can make shared digital rooms given custom names like "Goa Trip 2026" or "Apartment 4B".
+5.	Add Friends to Groups: Group creators can look up their friends by their registered email addresses and invite them into the shared room.
+6.	Add Group Expenses: Any member inside a group can record a shared bill. They enter what was bought, how much it cost, who paid for it, and the date.
+7.	See Who Owes Who: An automated calculation screen inside the group that looks at all the shared bills and translates them into simple pay-back instructions (e.g., "Sarah needs to pay John $45").
+8.	Delete Things You Created: Users retain the right to correct mistakes by deleting personal expenses, group expenses they entered, or entire groups they organized.
+9.	See Only Your Own Data (Privacy): Strict data isolation. User A cannot peek at User B's personal groceries, nor can they view the activity of a group they haven't been invited to.
+10.	Stay Logged In When You Refresh: If a user accidentally hits the browser refresh button or closes the tab, the app remembers them so they don't have to keep typing their password.
+11.	A Working Sidebar That Doesn't Reload: A fixed menu on the left side of the screen. Clicking "Groups" or "Expenses" instantly swaps the main screen content instantly without making the web page blink or reload from scratch.
+SECTION 4: USER FLOWS
+How someone signs up
+1.	The user lands on the app website and clicks the "Sign Up" button.
+2.	The user is asked to fill into three empty boxes: Full Name, Email Address, and a Password (must be at least 6 characters).
+3.	The user clicks "Create Account".
+4.	The database verifies that the email isn't already taken, saves the user, logs them in instantly, and drops them onto their new empty /dashboard.
+How someone logs in
+1.	An existing user visits /login.
+2.	They type their registered Email and their Password.
+3.	They click "Sign In".
+4.	The database checks if the password matches the safe hash. If it matches, the user is instantly transported to /dashboard/expenses.
+How someone adds a personal expense
+1.	On the /dashboard/expenses view, the user looks at the top of the page at the "New Expense" box.
+2.	They type 450 into the Amount box, type Taxi to office into the Description box, and select Transport from the Category dropdown menu.
+3.	They click the "Save Expense" button.
+4.	The new expense pops up at the very top of their past-expenses list below, and their "Total Spent This Month" card instantly ticks up by 450.
+How someone creates a group and adds a friend
+1.	The user clicks "Groups" on the left sidebar.
+2.	In the "Create a New Group" box, they type Weekend Camping and hit "Create".
+3.	The group appears on their screen. They click on Weekend Camping to open it.
+4.	Inside the group view, they see a box labeled "Invite a Friend". They type their friend's registered email (rohan@example.com) and click "Add Member".
+5.	Rohan's name instantly pops up in the "Group Members" sidebar on the right.
+How group expenses are visible to all group members
+1.	Once Rohan is added to Weekend Camping, he opens the app on his own phone.
+2.	He clicks his "Groups" tab and sees Weekend Camping listed.
+3.	When he clicks it, he sees the exact same list of camp-ground receipts, total costs, and member lists that the creator sees.
+How any member can add or modify expenses
+1.	Inside the group, Rohan buys firewood. He clicks "Add Group Bill".
+2.	He enters: Description: Firewood, Amount: 600, Paid By: Rohan. He clicks "Submit".
+3.	The main group ledger updates instantly for both Rohan and the original creator. The "Who owes who" board recalculates on the spot to show that the group now owes Rohan some money.
+What happens if they do something wrong (Error States)
+●	Forgot an @ in the email: The input box turns red and says: "Please enter a valid email address."
+●	Password too short during signup: A warning appears: "Your password must be at least 6 characters long."
+●	Leaving the amount blank on an expense: The form shakes slightly and displays: "Please enter an amount greater than 0."
+●	Trying to add a friend who hasn't signed up for the app yet: A notice pops up saying: "We couldn't find a user with that email. Ask them to sign up first!"
+What shows when it's working (Success States)
+●	Upon creating an expense: A small green pop-up bubble in the bottom right corner says: "✓ Expense saved successfully!" (disappears after 3 seconds).
+●	Upon inviting a member: A green notification reads: "✓ Rohan joined the group."
+●	Upon settling a group: A cheerful message reads: "✓ All debts in this group are settled!"
+SECTION 5: PAGES AND COMPONENTS
+1. /login Screen
+●	What it looks like: A clean, minimal page with a white digital card sitting in the dead center of a light-gray background.
+●	On-screen elements:
+○	Title: A large, bold header reading "Sign in to your account".
+○	Email Input: A text box labeled "Email Address".
+○	Password Input: A hidden-text box labeled "Password".
+○	Sign In Button: A wide, bright blue button reading "Sign In".
+○	Footer Link: Small text at the bottom asking, "Don't have an account? [Sign up here]".
+2. /signup Screen
+●	What it looks like: Identical layout to the login page to keep the user feeling comfortable, but with one extra form box.
+●	On-screen elements:
+○	Title: "Create a fresh account".
+○	Name Input: Box labeled "Your Full Name".
+○	Email Input: Box labeled "Email Address".
+○	Password Input: Box labeled "Choose a Password".
+○	Validation Helper: Tiny gray text underneath saying "Must be at least 6 characters".
+○	Submit Button: A wide green button reading "Create Account".
+3. /dashboard Layout (The Master Wrapper)
+●	What it looks like: A classic modern web application frame. The screen is split into two zones: a dark, narrow permanent column on the left (the Sidebar), and a massive, light-colored open workspace on the right.
+●	On-screen elements:
+○	Top of Sidebar: The app's logo/name written in bright bold letters: "SPLIT".
+○	Navigation Links: Two big clickable buttons: "📊 My Expenses" and "👥 Shared Groups". The one you are currently looking at is highlighted in a soft blue box.
+○	Bottom of Sidebar: A small profile box showing the logged-in user's name and email, sitting right above a red "🚪 Logout" button.
+4. /dashboard/expenses Screen
+●	What it looks like: The user's personal financial command center.
+●	On-screen elements:
+○	Top Row (Stats Cards): Four distinct rectangular white cards sitting side-by-side.
+■	Card 1: Total Spent ₹45,200
+■	Card 2: This Month ₹12,400
+■	Card 3: Total Transactions 34
+■	Card 4: Average Expense ₹1,329
+○	Middle Section (The Entry Form): A horizontal white strip containing three input boxes side-by-side (Expense Name, Amount ₹, Category Dropdown) and a blue "+ Add" button at the end.
+○	Bottom Section (The History Table): A neat list organized by rows. Each row shows the date, the title, a colored badge for the category (e.g., orange for Food), the price in bold, and a small red "Trash Can" icon on the far right to delete it.
+5. /dashboard/groups Screen
+●	What it looks like: A split view. The top half lets you create a group; the bottom half presents your groups as a grid of neat folder-like clickable cards.
+●	On-screen elements:
+○	Top Banner: A card saying "Start a new split", featuring a text box for Group Name and a green "Create Group" button.
+○	The Grid: A series of large square cards representing the user's groups. Each card shows:
+■	The Name of the group (e.g., "Goa Weekend").
+■	A small sub-label showing the member count (e.g., "5 members").
+■	A bold status stamp at the bottom stating your personal position: either "You are owed ₹1,400" in green, or "You owe ₹600" in red.
+SECTION 6: DATABASE SCHEMA
+The data is organized inside Supabase into five clean, linked tables:
+
+
+
++-------------------+       +--------------------+       +-------------------+
+|       users       |       | shared_groups      |       | group_members     |
++-------------------+       +--------------------+       +-------------------+
+| id (PK)           |<--+   | id (PK)            |<---+  | id (PK)           |
+| email             |   |   | name               |    +--| group_id (FK)     |
+| name              |   |   | created_by (FK)----+       | user_id (FK)------+
+| date_joined       |   |   | date_created       |       +-------------------+
++-------------------+   |   +--------------------+                 |
+        ^               |             ^                            |
+        |               +-------------|----------------------------+
++-------------------+                 |
+| personal_expenses |                 |                  +-------------------+
++-------------------+                 |                  | group_expenses    |
+| id (PK)           |                 |                  +-------------------+
+| user_id (FK)------+                 +------------------| group_id (FK)     |
+| description       |                                    | paid_by_user (FK)-+
+| amount            |                                    | amount            |
+| category          |                                    | description       |
+| date              |                                    | date              |
++-------------------+                                    +-------------------+
+
+Table 1: users
+●	Purpose: Keeps track of everyone allowed into the building.
+●	Columns: * id: Unique text string for the person (Primary Key).
+○	email: Their login address.
+○	name: How their friends see them on screen.
+○	date_joined: The exact timestamp they clicked sign up.
+Table 2: personal_expenses
+●	Purpose: Stores the private daily spending for individuals.
+●	Columns:
+○	id: Unique receipt number.
+○	user_id: Links directly to the id in the users table (Foreign Key).
+○	description: What they bought.
+○	amount: The cost (stored as a decimal number).
+○	category: The tag (Food, Travel, Utilities, etc.).
+○	date: When it happened.
+Table 3: shared_groups
+●	Purpose: Acts as the digital container for a group of friends.
+●	Columns:
+○	id: Unique folder number.
+○	name: The title of the trip/event.
+○	created_by: Links to the user_id of the organizer.
+○	date_created: Timestamp.
+Table 4: group_members
+●	Purpose: A match-making table that glues Users and Groups together.
+●	Columns:
+○	id: Unique link number.
+○	group_id: Links to a specific group.
+○	user_id: Links to a specific user.
+(If a group has 4 people in it, this table will have 4 separate rows carrying that same group_id).
+Table 5: group_expenses
+●	Purpose: Holds every single receipt dropped into a shared group.
+●	Columns:
+○	id: Unique shared receipt number.
+○	group_id: Which group folder this receipt belongs inside.
+○	paid_by_user: Which specific user paid for it.
+○	amount: How much cash was put down.
+○	description: What the group received for it.
+○	date: Timestamp.
+Cascading Deletes
+The database is set up with strict house-cleaning rules. If Aisha deletes the "Goa Trip" inside the shared_groups table, the database is programmed to automatically seek out and destroy every single row in group_members and group_expenses tied to that trip. Nothing is left behind floating in dead space.
+SECTION 7: AUTHENTICATION & SECURITY
+Logins and Passwords
+●	We rely on Supabase's built-in safe identity system. When a user types a password like "MyCat123", the computer transforms it into an unreadable scrambled string like $2a$12$R9h/cIPz... before putting it in the database (hashing). Even if a rogue employee looked at the database table, they could never read the user's actual password.
+Strict Privacy Fences (Row Level Security)
+Security is built into the floorboards of the database itself, not just the front-end website code. We write two strict digital laws into the Supabase server:
+1.	The Private Ledger Law: When the website asks the database for personal_expenses, the database checks the visitor's ID badge. It will strictly refuse to hand over any row where expense.user_id does not match visitor.id.
+2.	The Group Membership Law: A user can only fetch the details or bills of a shared_group if their personal ID exists inside the group_members list for that exact group. If a hacker tries to manually force the website browser to load /groups/9999, the database server slaps the request down and returns 0 results.
+Keeping the Keys Safe
+The web code needs a secret password (an API Key) to talk to the Supabase database. This key is never typed into the code files that get uploaded to GitHub. Instead, it is stored in locked Environment Variables inside the hosting server.
+SECTION 8: NON-FUNCTIONAL REQUIREMENTS
+1. Mobile Responsiveness
+The app must feel like a native app when opened on an iPhone or Android device. On mobile screens:
+●	The wide left Sidebar automatically collapses into a hidden menu accessible via a standard "Hamburger" (≡) button at the top left.
+●	The 4-across Stats Cards automatically stack into a 2x2 square grid so the numbers remain large and readable without pinching or zooming.
+2. Button Loading States (Double-Click Prevention)
+When dealing with money, clicking a button twice by accident is dangerous. Whenever a user clicks "Save Expense" or "Pay Bill":
+1.	The button instantly changes its text from "Save" to "Saving..."
+2.	A small spinning circle appears inside the button.
+3.	The button becomes completely unclickable for the 1.5 seconds it takes the server to finish writing the transaction, preventing double-charges.
+3. Human-Readable Error Messages
+Under no circumstances should the user ever see raw computer code pop up on their screen.
+●	Bad / Forbidden: SQL_ERR_23505: duplicate key value violates unique constraint "users_email_key"
+●	Required translation: "An account with this email address already exists. Try signing in instead!"
+4. Application Speed & Data Pagination
+To keep the dashboard snappy even for a user who has logged 2,000 coffees over three years, the app uses Pagination. When the dashboard opens, it only asks the database for the 20 most recent expenses. As the user scrolls to the bottom of the page, it seamlessly fetches the next 20 behind the scenes.
+5. The "Minimum Transactions" Debt Algorithm
+When a group trip ends, the app must run an intelligent optimization script rather than listing every single chaotic micro-transaction.
+●	The Problem: If Kabir owes Aisha ₹500, Aisha owes Rohan ₹500, and Rohan owes Kabir ₹500, standard tracking would tell them to make three separate bank transfers.
+●	The Algorithm: The app looks at the net balance of every individual (Total Paid minus Fair Share). It puts all "Net Debtors" in one column, and all "Net Creditors" in another, and draws the shortest possible straight lines between them. In the scenario above, the algorithm cancels them out and outputs: "0 transfers needed. Everyone is settled."
+6. Automated Hosting & Deployment
+The website is hosted on a professional high-speed cloud platform (such as Vercel). It is wired directly to the code repository. The moment a developer finishes testing a new feature and clicks "Merge to Main branch", the cloud platform automatically catches the new code, builds the site, and updates the live web address within 60 seconds with zero website downtime.
