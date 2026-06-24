@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { AddExpenseForm, AddMemberForm } from './GroupForms'
+import { AddExpenseForm, AddMemberForm, SettleUpForm } from './GroupForms'
 
 export default async function GroupDetailsPage({ params }) {
   const { id: groupId } = await params
@@ -51,6 +51,13 @@ export default async function GroupDetailsPage({ params }) {
     .eq('group_id', groupId)
     .order('date', { ascending: false })
 
+  // Fetch recorded payments
+  const { data: settlementHistory } = await supabase
+    .from('settlements')
+    .select('*')
+    .eq('group_id', groupId)
+    .order('created_at', { ascending: false })
+
   // --- SETTLEMENT ALGORITHM ---
   const paid = {}
   memberships.forEach(m => paid[m.user_id] = 0)
@@ -71,10 +78,16 @@ export default async function GroupDetailsPage({ params }) {
     balances[m.user_id] = paid[m.user_id] - share
   })
 
+  // Fold recorded payments into balances so they reduce outstanding debts
+  settlementHistory?.forEach(s => {
+    if (balances[s.paid_by] !== undefined) balances[s.paid_by] += s.amount
+    if (balances[s.paid_to] !== undefined) balances[s.paid_to] -= s.amount
+  })
+
   const debtors = Object.keys(balances).filter(id => balances[id] < -0.01).sort((a, b) => balances[a] - balances[b])
   const creditors = Object.keys(balances).filter(id => balances[id] > 0.01).sort((a, b) => balances[b] - balances[a])
-  
-  const settlements = []
+
+  const debts = []
   
   let i = 0
   let j = 0
@@ -88,7 +101,7 @@ export default async function GroupDetailsPage({ params }) {
     balances[debtor] += amount
     balances[creditor] -= amount
     
-    settlements.push({
+    debts.push({
       from: usersMap[debtor]?.name || 'Unknown',
       to: usersMap[creditor]?.name || 'Unknown',
       amount: amount
@@ -156,20 +169,20 @@ export default async function GroupDetailsPage({ params }) {
           </div>
         </div>
 
-        {/* Right Column (Settlements & Members) */}
+        {/* Right Column (Debts, Settle Up, History & Members) */}
         <div className="flex flex-col gap-6">
-          {/* Settlements */}
+          {/* Who Owes Who */}
           <div className="glass-card rounded-xl p-6 bg-gradient-to-br from-surface to-surface-container-high border-secondary/20">
             <h3 className="font-title-md text-lg text-on-surface mb-4 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">handshake</span>
-              Settlements
+              Who Owes Who
             </h3>
-            
-            {settlements.length === 0 ? (
+
+            {debts.length === 0 ? (
               <p className="text-sm text-on-surface-variant text-center py-4">Everyone is settled up! 🎉</p>
             ) : (
               <div className="flex flex-col gap-3">
-                {settlements.map((s, idx) => (
+                {debts.map((s, idx) => (
                   <div key={idx} className="flex items-center justify-between p-3 bg-surface rounded-lg border border-outline-variant/30 shadow-sm">
                     <div className="flex flex-col">
                       <span className="font-label-md text-on-surface text-sm"><span className="font-bold">{s.from}</span> owes</span>
@@ -180,7 +193,42 @@ export default async function GroupDetailsPage({ params }) {
                 ))}
               </div>
             )}
+
+            {/* Settle Up form — only shown when there are other members to pay */}
+            {users && users.filter(u => u.id !== user.id).length > 0 && (
+              <div className="mt-4 pt-4 border-t border-outline-variant/30">
+                <p className="font-label-sm text-on-surface-variant text-xs mb-3 uppercase tracking-wider">Record a payment you made</p>
+                <SettleUpForm groupId={groupId} members={users.filter(u => u.id !== user.id)} />
+              </div>
+            )}
           </div>
+
+          {/* Payment History */}
+          {settlementHistory && settlementHistory.length > 0 && (
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="font-title-md text-lg text-on-surface mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">receipt_long</span>
+                Payment History
+              </h3>
+              <div className="flex flex-col gap-2">
+                {settlementHistory.map(s => (
+                  <div key={s.id} className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg">
+                    <div className="flex flex-col">
+                      <span className="font-label-md text-on-surface text-sm">
+                        <span className="font-bold">{usersMap[s.paid_by]?.name || 'Unknown'}</span>
+                        {' '}paid{' '}
+                        <span className="font-bold">{usersMap[s.paid_to]?.name || 'Unknown'}</span>
+                      </span>
+                      <span className="font-label-sm text-on-surface-variant text-xs">
+                        {new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    </div>
+                    <span className="font-title-md font-bold text-[#15803d]">₹{Number(s.amount).toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Members */}
           <div className="glass-card rounded-xl p-6">

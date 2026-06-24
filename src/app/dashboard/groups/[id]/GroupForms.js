@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { addGroupExpense, addGroupMember } from '@/app/actions/group_details'
+import { addGroupExpense, addGroupMember, recordSettlement } from '@/app/actions/group_details'
 import toast from 'react-hot-toast'
 
 export function AddExpenseForm({ groupId }) {
@@ -40,6 +40,45 @@ export function AddExpenseForm({ groupId }) {
       <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md pressable shadow-md h-[42px] flex-shrink-0 disabled:opacity-70">
         {loading ? 'Adding...' : 'Add Expense'}
       </button>
+    </form>
+  )
+}
+
+export function SettleUpForm({ groupId, members }) {
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    const form = event.currentTarget
+    setLoading(true)
+    const formData = new FormData(form)
+    formData.append('group_id', groupId)
+
+    const result = await recordSettlement(formData)
+
+    if (result?.error) {
+      toast.error(result.error)
+    } else {
+      toast.success('Payment recorded!')
+      form.reset()
+    }
+    setLoading(false)
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <select name="paid_to" required defaultValue="" className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 px-3 text-on-surface focus:border-primary font-body-md outline-none text-sm">
+        <option value="" disabled>I paid...</option>
+        {members.map(m => (
+          <option key={m.id} value={m.id}>{m.name}</option>
+        ))}
+      </select>
+      <div className="flex gap-2">
+        <input name="amount" type="number" step="0.01" min="0.01" required placeholder="Amount ₹" className="flex-1 bg-surface-container-lowest border border-outline-variant rounded-lg py-2 px-3 text-on-surface focus:border-primary font-body-md outline-none text-sm" />
+        <button type="submit" disabled={loading} className="py-2 px-4 bg-secondary text-on-secondary rounded-xl font-label-md pressable shadow-sm disabled:opacity-70 text-sm whitespace-nowrap">
+          {loading ? 'Saving...' : 'Settle Up'}
+        </button>
+      </div>
     </form>
   )
 }

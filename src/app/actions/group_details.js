@@ -30,11 +30,10 @@ export async function addGroupExpense(formData) {
 
 export async function addGroupMember(formData) {
   const supabase = await createClient()
-  
+
   const groupId = formData.get('group_id')
   const email = formData.get('email')
 
-  // Find user by email
   const { data: targetUser } = await supabase.from('users').select('id, email, name').eq('email', email).single()
 
   if (!targetUser) return { error: 'User not found. They need to sign up first.' }
@@ -45,6 +44,32 @@ export async function addGroupMember(formData) {
   })
 
   if (error) return { error: 'Failed to add member or already in group' }
+
+  revalidatePath(`/dashboard/groups/${groupId}`)
+  return { success: true }
+}
+
+export async function recordSettlement(formData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) return { error: 'Not authenticated' }
+
+  const groupId = formData.get('group_id')
+  const paidTo = formData.get('paid_to')
+  const amount = parseFloat(formData.get('amount'))
+
+  if (!paidTo) return { error: 'Please select who you paid.' }
+  if (!amount || amount <= 0) return { error: 'Please enter a valid amount.' }
+
+  const { error } = await supabase.from('settlements').insert({
+    group_id: groupId,
+    paid_by: user.id,
+    paid_to: paidTo,
+    amount,
+  })
+
+  if (error) return { error: 'Failed to record payment.' }
 
   revalidatePath(`/dashboard/groups/${groupId}`)
   return { success: true }
