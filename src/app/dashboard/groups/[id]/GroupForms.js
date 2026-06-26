@@ -10,6 +10,22 @@ export function AddExpenseForm({ groupId, currencyCode = 'INR', members = [] }) 
   const [loading, setLoading] = useState(false)
   const [splitType, setSplitType] = useState('equal')
   const [splits, setSplits] = useState({})
+  const [preview, setPreview] = useState(null)
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Receipt must be under 5 MB')
+        e.target.value = ''
+        setPreview(null)
+        return
+      }
+      setPreview(URL.createObjectURL(file))
+    } else {
+      setPreview(null)
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -36,6 +52,7 @@ export function AddExpenseForm({ groupId, currencyCode = 'INR', members = [] }) 
       form.reset()
       setSplitType('equal')
       setSplits({})
+      setPreview(null)
     }
     setLoading(false)
   }
@@ -62,9 +79,36 @@ export function AddExpenseForm({ groupId, currencyCode = 'INR', members = [] }) 
             <option value="Other">Other</option>
           </select>
         </div>
-        <button type="submit" disabled={loading} className="btn btn-fill w-full md:w-auto flex items-center justify-center gap-2 disabled:opacity-70" style={{ height: '42px' }}>
-          {loading ? 'Adding...' : 'Add expense'}
-        </button>
+        <div className="flex gap-2 w-full md:w-auto">
+          <div className="relative">
+            <input 
+              type="file" 
+              name="receipt" 
+              id="group-receipt-upload" 
+              accept="image/*" 
+              className="hidden" 
+              onChange={handleFileChange} 
+            />
+            <label 
+              htmlFor="group-receipt-upload" 
+              className="btn btn-outline flex items-center justify-center cursor-pointer h-[42px] w-[42px] p-0" 
+              title="Attach receipt"
+            >
+              {preview ? (
+                <img src={preview} alt="Receipt preview" className="w-full h-full object-cover rounded-md" />
+              ) : (
+                <i className="ti ti-camera text-lg"></i>
+              )}
+            </label>
+          </div>
+          <button type="submit" disabled={loading} className="btn btn-fill flex-1 md:flex-none flex items-center justify-center gap-2 h-[42px] px-4 disabled:opacity-70">
+            {loading ? (
+              <><i className="ti ti-loader-2 animate-spin text-sm"></i> Saving...</>
+            ) : (
+              <><i className="ti ti-plus text-sm"></i> Add</>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Split type selector */}

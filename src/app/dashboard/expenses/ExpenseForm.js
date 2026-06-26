@@ -6,6 +6,22 @@ import toast from 'react-hot-toast'
 
 export default function ExpenseForm() {
   const [loading, setLoading] = useState(false)
+  const [preview, setPreview] = useState(null)
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Receipt must be under 5 MB')
+        e.target.value = ''
+        setPreview(null)
+        return
+      }
+      setPreview(URL.createObjectURL(file))
+    } else {
+      setPreview(null)
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -20,6 +36,7 @@ export default function ExpenseForm() {
     } else {
       toast.success('Expense saved!')
       form.reset()
+      setPreview(null)
     }
     setLoading(false)
   }
@@ -48,13 +65,38 @@ export default function ExpenseForm() {
         </select>
       </div>
 
-      <button type="submit" disabled={loading} className="btn btn-fill w-full md:w-auto flex items-center justify-center gap-2 disabled:opacity-70" style={{ height: '42px' }}>
-        {loading ? (
-          <><i className="ti ti-loader-2 animate-spin text-sm"></i> Saving...</>
-        ) : (
-          <><i className="ti ti-plus text-sm"></i> Add</>
-        )}
-      </button>
+      <div className="flex gap-2">
+        <div className="relative">
+          <input 
+            type="file" 
+            name="receipt" 
+            id="receipt-upload" 
+            accept="image/*" 
+            className="hidden" 
+            onChange={handleFileChange} 
+          />
+          <label 
+            htmlFor="receipt-upload" 
+            className="btn btn-outline flex items-center justify-center cursor-pointer" 
+            style={{ width: '42px', height: '42px', padding: 0 }}
+            title="Attach receipt"
+          >
+            {preview ? (
+              <img src={preview} alt="Receipt preview" className="w-full h-full object-cover rounded-md" />
+            ) : (
+              <i className="ti ti-camera text-lg"></i>
+            )}
+          </label>
+        </div>
+
+        <button type="submit" disabled={loading} className="btn btn-fill flex items-center justify-center gap-2 disabled:opacity-70" style={{ height: '42px', padding: '0 20px' }}>
+          {loading ? (
+            <><i className="ti ti-loader-2 animate-spin text-sm"></i> Saving...</>
+          ) : (
+            <><i className="ti ti-plus text-sm"></i> Add</>
+          )}
+        </button>
+      </div>
     </form>
   )
 }

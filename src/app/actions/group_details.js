@@ -18,13 +18,40 @@ export async function addGroupExpense(formData) {
 
   if (!amount || amount <= 0) return { error: 'Invalid amount' }
 
+  const receiptFile = formData.get('receipt')
+  let receipt_url = null
+
+  if (receiptFile && receiptFile.size > 0) {
+    if (receiptFile.size > 5 * 1024 * 1024) return { error: 'Receipt must be under 5 MB.' }
+    if (!receiptFile.type.startsWith('image/')) return { error: 'Please upload an image file.' }
+
+    const ext = receiptFile.name.split('.').pop()
+    const fileName = `${user.id}/group_${Date.now()}.${ext}`
+
+    const { data, error: uploadError } = await supabase.storage
+      .from('receipts')
+      .upload(fileName, receiptFile)
+
+    if (uploadError) {
+      console.error(uploadError)
+      return { error: 'Failed to upload receipt.' }
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('receipts')
+      .getPublicUrl(fileName)
+      
+    receipt_url = publicUrlData.publicUrl
+  }
+
   const { data: expense, error } = await supabase.from('group_expenses').insert({
     group_id: groupId,
     paid_by_user: user.id,
     amount,
     description,
     category,
-    split_type: splitType
+    split_type: splitType,
+    receipt_url
   }).select('id').single()
 
   if (error) return { error: 'Failed to add expense' }

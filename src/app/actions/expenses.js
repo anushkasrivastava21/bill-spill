@@ -17,11 +17,38 @@ export async function addPersonalExpense(formData) {
   if (!description) return { error: 'Please enter a description.' }
   if (!category) return { error: 'Please select a category.' }
 
+  const receiptFile = formData.get('receipt')
+  let receipt_url = null
+
+  if (receiptFile && receiptFile.size > 0) {
+    if (receiptFile.size > 5 * 1024 * 1024) return { error: 'Receipt must be under 5 MB.' }
+    if (!receiptFile.type.startsWith('image/')) return { error: 'Please upload an image file.' }
+
+    const ext = receiptFile.name.split('.').pop()
+    const fileName = `${user.id}/personal_${Date.now()}.${ext}`
+
+    const { data, error: uploadError } = await supabase.storage
+      .from('receipts')
+      .upload(fileName, receiptFile)
+
+    if (uploadError) {
+      console.error(uploadError)
+      return { error: 'Failed to upload receipt.' }
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('receipts')
+      .getPublicUrl(fileName)
+      
+    receipt_url = publicUrlData.publicUrl
+  }
+
   const { error } = await supabase.from('personal_expenses').insert({
     user_id: user.id,
     description,
     amount,
-    category
+    category,
+    receipt_url
   })
 
   if (error) return { error: 'Failed to add expense' }

@@ -1,8 +1,10 @@
-import { DM_Sans } from "next/font/google";
+import { Sora, Work_Sans, Space_Grotesk } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-dm-sans" });
+const sora = Sora({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-sora" });
+const workSans = Work_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-work-sans" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-space-grotesk" });
 
 export const metadata = {
   title: "Bill Spill",
@@ -29,7 +31,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${dmSans.variable} min-h-screen flex flex-col`} style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
+      <body className={`${workSans.variable} ${sora.variable} ${spaceGrotesk.variable} min-h-screen flex flex-col`} style={{ fontFamily: "var(--font-work-sans)" }}>
         {children}
         <Toaster 
           position="bottom-right"
@@ -37,10 +39,12 @@ export default function RootLayout({ children }) {
             style: {
               background: 'var(--color-bg-elevated)',
               color: 'var(--color-text-1)',
-              border: '0.5px solid var(--color-border)',
-              borderRadius: '8px',
-              fontSize: '13px',
-              fontFamily: "'DM Sans', system-ui, sans-serif",
+              border: '1px solid var(--color-border)',
+              borderRadius: '16px',
+              fontSize: '14px',
+              fontFamily: "var(--font-work-sans)",
+              backdropFilter: 'blur(12px)',
+              boxShadow: '0 8px 32px rgba(0, 93, 144, 0.1)',
             },
           }}
         />
