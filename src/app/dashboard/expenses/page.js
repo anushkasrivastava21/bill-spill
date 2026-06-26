@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import ExpenseForm from './ExpenseForm'
 import ExpenseList from './ExpenseList'
+import { PersonalExportButtons } from './ExportButtons'
 
 export default async function ExpensesPage() {
   const supabase = await createClient()
@@ -25,9 +26,13 @@ export default async function ExpensesPage() {
   const avg = count > 0 ? (totalSpent / count).toFixed(0) : 0
 
   return (
-    <div className="flex flex-col gap-6 py-6">
-      {/* Section label */}
-      <div className="section-label">Dashboard</div>
+    <div className="flex flex-col gap-6 py-6 print-area">
+      <div className="flex items-center justify-between">
+        <div className="section-label">Dashboard</div>
+        <div className="print:hidden">
+          <PersonalExportButtons expenses={expenses || []} />
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -52,8 +57,8 @@ export default async function ExpensesPage() {
       </div>
 
       {/* Entry Form */}
-      <div className="section-label mt-4">Add expense</div>
-      <div className="card" style={{ padding: '20px' }}>
+      <div className="section-label mt-4 print:hidden">Add expense</div>
+      <div className="card print:hidden" style={{ padding: '20px' }}>
         <ExpenseForm />
       </div>
 

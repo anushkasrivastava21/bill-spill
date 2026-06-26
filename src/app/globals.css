@@ -356,3 +356,19 @@ body {
   color: var(--color-ember-text);
   border-color: transparent;
 }
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .card, .list-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  .expense-row, .settle-row {
+    border-bottom: 1px solid #ddd !important;
+  }
+}
