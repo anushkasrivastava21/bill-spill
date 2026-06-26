@@ -10,11 +10,13 @@ export async function createGroup(formData) {
   if (!user) return { error: 'Not authenticated' }
 
   const name = formData.get('name')
+  const currency = formData.get('currency') || 'INR'
   if (!name) return { error: 'Group name is required' }
 
   // 1. Create group
   const { data: group, error: groupError } = await supabase.from('shared_groups').insert({
     name,
+    currency,
     created_by: user.id
   }).select('id').single()
 

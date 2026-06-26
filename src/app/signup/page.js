@@ -21,69 +21,72 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-container-low px-4 wave-pattern">
-      <div className="glass-card w-full max-w-md p-10 rounded-2xl flex flex-col gap-6 relative">
-        <div className="absolute -left-10 -top-10 w-32 h-32 bg-secondary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
-        
-        <div className="flex flex-col items-center gap-1 z-10 text-center">
-          <span className="material-symbols-outlined text-primary text-5xl mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>diversity_3</span>
-          <h1 className="font-display-lg text-[28px] text-on-surface">Create a fresh account</h1>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--color-bg-page)' }}>
+      <div className="card-elevated w-full max-w-sm flex flex-col gap-6" style={{ padding: '40px 32px' }}>
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="w-10 h-10 flex items-center justify-center rounded-lg" style={{ background: 'var(--color-ember)' }}>
+            <i className="ti ti-users-group text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold" style={{ color: 'var(--color-text-1)', letterSpacing: '-0.3px' }}>Create an account</h1>
+            <p className="text-[13px] mt-1" style={{ color: 'var(--color-text-3)' }}>Start splitting bills with friends</p>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4 z-10">
-          <div className="flex flex-col gap-1">
-            <label className="font-label-md text-on-surface-variant">Your Full Name</label>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Full name</label>
             <input 
               name="name"
               type="text" 
               required
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none"
-              placeholder="Aisha Sharma"
+              className="input-field"
+              placeholder="Anushka Sharma"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="font-label-md text-on-surface-variant">Email Address</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Email</label>
             <input 
               name="email"
               type="email" 
               required
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none"
-              placeholder="aisha@example.com"
+              className="input-field"
+              placeholder="anushka@example.com"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="font-label-md text-on-surface-variant">Choose a Password</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Password</label>
             <input 
               name="password"
               type="password" 
               required
               minLength={6}
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none"
+              className="input-field"
               placeholder="••••••••"
             />
-            <span className="text-xs text-outline font-body-md mt-1">Must be at least 6 characters</span>
+            <span className="text-[11px] mt-0.5" style={{ color: 'var(--color-text-3)' }}>Must be at least 6 characters</span>
           </div>
 
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full mt-2 py-3 bg-[#4ade80] text-[#064e3b] rounded-xl font-label-md font-bold flex items-center justify-center gap-3 pressable shadow-md disabled:opacity-70"
+            className="btn btn-fill w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-70"
+            style={{ height: '44px' }}
           >
             {loading ? (
-              <>
-                <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-                Creating...
-              </>
+              <><i className="ti ti-loader-2 animate-spin text-sm"></i> Creating...</>
             ) : (
-              'Create Account'
+              'Create account'
             )}
           </button>
         </form>
 
-        <p className="text-center font-body-md text-sm text-on-surface-variant mt-4 z-10">
-          Already have an account? <Link href="/login" className="text-primary font-medium hover:underline">Sign in here</Link>
+        <p className="text-center text-[13px]" style={{ color: 'var(--color-text-3)' }}>
+          Already have an account?{' '}
+          <Link href="/login" className="font-medium" style={{ color: 'var(--color-ember-text)' }}>Sign in</Link>
         </p>
       </div>
     </div>

@@ -22,46 +22,44 @@ export default async function ExpensesPage() {
   
   const thisMonthSpent = thisMonthExpenses.reduce((sum, exp) => sum + exp.amount, 0)
   const count = expenses?.length || 0
-  const avg = count > 0 ? (totalSpent / count).toFixed(2) : 0
+  const avg = count > 0 ? (totalSpent / count).toFixed(0) : 0
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-3 mb-3">
-        <span className="material-symbols-outlined text-primary text-3xl">payments</span>
-        <h2 className="font-title-md text-title-md text-on-surface">My Expenses</h2>
-      </div>
+    <div className="flex flex-col gap-6 py-6">
+      {/* Section label */}
+      <div className="section-label">Dashboard</div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <div className="glass-card rounded-xl p-4 flex flex-col gap-1">
-          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Total Spent</span>
-          <span className="font-display-lg text-2xl text-primary font-bold">₹{totalSpent.toLocaleString()}</span>
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="card stat-card">
+          <div className="stat-label">Total Spent</div>
+          <div className="stat-value"><span className="stat-currency">₹</span>{totalSpent.toLocaleString()}</div>
+          <div className="stat-tag tag-ember">{count} entries</div>
         </div>
-        <div className="glass-card rounded-xl p-4 flex flex-col gap-1">
-          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">This Month</span>
-          <span className="font-display-lg text-2xl text-primary font-bold">₹{thisMonthSpent.toLocaleString()}</span>
+        <div className="card stat-card">
+          <div className="stat-label">This Month</div>
+          <div className="stat-value"><span className="stat-currency">₹</span>{thisMonthSpent.toLocaleString()}</div>
+          <div className="stat-tag tag-red">{thisMonthExpenses.length} this month</div>
         </div>
-        <div className="glass-card rounded-xl p-4 flex flex-col gap-1">
-          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Transactions</span>
-          <span className="font-display-lg text-2xl text-primary font-bold">{count}</span>
+        <div className="card stat-card">
+          <div className="stat-label">Transactions</div>
+          <div className="stat-value">{count}</div>
         </div>
-        <div className="glass-card rounded-xl p-4 flex flex-col gap-1">
-          <span className="font-label-sm text-on-surface-variant uppercase tracking-wider text-xs">Average</span>
-          <span className="font-display-lg text-2xl text-primary font-bold">₹{avg}</span>
+        <div className="card stat-card">
+          <div className="stat-label">Average</div>
+          <div className="stat-value"><span className="stat-currency">₹</span>{avg}</div>
         </div>
       </div>
 
       {/* Entry Form */}
-      <div className="glass-card rounded-xl p-6 mt-4 wave-pattern">
-        <h3 className="font-title-md text-lg text-on-surface mb-4">New Expense</h3>
+      <div className="section-label mt-4">Add expense</div>
+      <div className="card" style={{ padding: '20px' }}>
         <ExpenseForm />
       </div>
 
-      {/* History Table */}
-      <div className="mt-4">
-        <h3 className="font-title-md text-lg text-on-surface mb-4">History</h3>
-        <ExpenseList expenses={expenses || []} />
-      </div>
+      {/* History */}
+      <div className="section-label mt-4">History</div>
+      <ExpenseList expenses={expenses || []} />
     </div>
   )
 }

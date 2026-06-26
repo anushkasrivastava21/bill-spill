@@ -1,25 +1,49 @@
-import { Sora, Space_Grotesk, Work_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-const sora = Sora({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-sora" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["500"], variable: "--font-space-grotesk" });
-const workSans = Work_Sans({ subsets: ["latin"], weight: ["400"], variable: "--font-work-sans" });
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-dm-sans" });
 
 export const metadata = {
-  title: "ShoreSplit",
-  description: "Bill Splitter App",
+  title: "Bill Spill",
+  description: "Split bills with friends, beautifully.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('bill-spill-theme') || 'system';
+                  var isDark = theme === 'dark' || 
+                    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) document.documentElement.classList.add('dark');
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
-      <body className={`${sora.variable} ${spaceGrotesk.variable} ${workSans.variable} font-body-md min-h-screen flex flex-col bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container`}>
+      <body className={`${dmSans.variable} min-h-screen flex flex-col`} style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}>
         {children}
-        <Toaster position="bottom-right" />
+        <Toaster 
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: 'var(--color-bg-elevated)',
+              color: 'var(--color-text-1)',
+              border: '0.5px solid var(--color-border)',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+            },
+          }}
+        />
       </body>
     </html>
   );

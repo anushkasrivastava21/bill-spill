@@ -18,56 +18,41 @@ export default function ExpenseForm() {
     if (result?.error) {
       toast.error(result.error)
     } else {
-      toast.success('Expense saved successfully!')
+      toast.success('Expense saved!')
       form.reset()
     }
     setLoading(false)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end w-full">
-      <div className="flex flex-col gap-1 w-full md:w-1/3">
-        <label className="font-label-md text-on-surface-variant text-sm">Expense Name</label>
-        <div className="relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">edit</span>
-          <input name="description" type="text" required className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none" placeholder="Morning coffee" />
-        </div>
+    <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-3 items-end w-full">
+      <div className="flex flex-col gap-1 flex-1">
+        <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Expense name</label>
+        <input name="description" type="text" required className="input-field" placeholder="Morning coffee" />
       </div>
       
-      <div className="flex flex-col gap-1 w-full md:w-1/4">
-        <label className="font-label-md text-on-surface-variant text-sm">Amount ₹</label>
-        <div className="relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">payments</span>
-          <input name="amount" type="number" step="0.01" min="0.01" required className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none" placeholder="120" />
-        </div>
+      <div className="flex flex-col gap-1 w-full md:w-36">
+        <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Amount</label>
+        <input name="amount" type="number" step="0.01" min="0.01" required className="input-field" placeholder="₹ 120" />
       </div>
       
-      <div className="flex flex-col gap-1 w-full md:w-1/4">
-        <label className="font-label-md text-on-surface-variant text-sm">Category</label>
-        <div className="relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">category</span>
-          <select name="category" defaultValue="" required className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none appearance-none cursor-pointer">
-            <option value="" disabled>Select...</option>
-            <option value="Food">Food & Dining</option>
-            <option value="Transport">Transport</option>
-            <option value="Utilities">Bills & Utilities</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+      <div className="flex flex-col gap-1 w-full md:w-40">
+        <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Category</label>
+        <select name="category" defaultValue="" required className="input-field" style={{ appearance: 'none' }}>
+          <option value="" disabled>Select...</option>
+          <option value="Food">Food & Dining</option>
+          <option value="Transport">Transport</option>
+          <option value="Utilities">Bills & Utilities</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
-      <button type="submit" disabled={loading} className="w-full md:w-auto py-2 px-6 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-3 pressable shadow-md h-[42px] disabled:opacity-70 flex-shrink-0">
+      <button type="submit" disabled={loading} className="btn btn-fill w-full md:w-auto flex items-center justify-center gap-2 disabled:opacity-70" style={{ height: '42px' }}>
         {loading ? (
-          <>
-            <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-            Saving...
-          </>
+          <><i className="ti ti-loader-2 animate-spin text-sm"></i> Saving...</>
         ) : (
-          <>
-            <span className="material-symbols-outlined text-sm">add</span>
-            Add
-          </>
+          <><i className="ti ti-plus text-sm"></i> Add</>
         )}
       </button>
     </form>

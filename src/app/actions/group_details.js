@@ -12,6 +12,7 @@ export async function addGroupExpense(formData) {
   const groupId = formData.get('group_id')
   const amount = parseFloat(formData.get('amount'))
   const description = formData.get('description')
+  const category = formData.get('category') || 'Other'
 
   if (!amount || amount <= 0) return { error: 'Invalid amount' }
 
@@ -19,7 +20,8 @@ export async function addGroupExpense(formData) {
     group_id: groupId,
     paid_by_user: user.id,
     amount,
-    description
+    description,
+    category
   })
 
   if (error) return { error: 'Failed to add expense' }

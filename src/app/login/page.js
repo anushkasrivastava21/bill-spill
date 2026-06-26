@@ -21,34 +21,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-container-low px-4 wave-pattern">
-      <div className="glass-card w-full max-w-md p-10 rounded-2xl flex flex-col gap-6 relative">
-        <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
-        
-        <div className="flex flex-col items-center gap-1 z-10 text-center">
-          <span className="material-symbols-outlined text-primary text-5xl mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>sailing</span>
-          <h1 className="font-display-lg text-[28px] text-on-surface">Sign in to your account</h1>
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--color-bg-page)' }}>
+      <div className="card-elevated w-full max-w-sm flex flex-col gap-6" style={{ padding: '40px 32px' }}>
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="w-10 h-10 flex items-center justify-center rounded-lg" style={{ background: 'var(--color-ember)' }}>
+            <i className="ti ti-receipt-2 text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold" style={{ color: 'var(--color-text-1)', letterSpacing: '-0.3px' }}>Welcome back</h1>
+            <p className="text-[13px] mt-1" style={{ color: 'var(--color-text-3)' }}>Sign in to Bill Spill</p>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 mt-4 z-10">
-          <div className="flex flex-col gap-1">
-            <label className="font-label-md text-on-surface-variant">Email Address</label>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Email</label>
             <input 
               name="email"
               type="email" 
               required
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none"
+              className="input-field"
               placeholder="you@example.com"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label className="font-label-md text-on-surface-variant">Password</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[12px] font-medium" style={{ color: 'var(--color-text-3)' }}>Password</label>
             <input 
               name="password"
               type="password" 
               required
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md outline-none"
+              className="input-field"
               placeholder="••••••••"
             />
           </div>
@@ -56,21 +60,20 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full mt-2 py-3 bg-primary text-on-primary rounded-xl font-label-md flex items-center justify-center gap-3 pressable shadow-md ocean-gradient disabled:opacity-70"
+            className="btn btn-fill w-full mt-2 flex items-center justify-center gap-2 disabled:opacity-70"
+            style={{ height: '44px' }}
           >
             {loading ? (
-              <>
-                <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-                Signing in...
-              </>
+              <><i className="ti ti-loader-2 animate-spin text-sm"></i> Signing in...</>
             ) : (
-              'Sign In'
+              'Sign in'
             )}
           </button>
         </form>
 
-        <p className="text-center font-body-md text-sm text-on-surface-variant mt-4 z-10">
-          Don't have an account? <Link href="/signup" className="text-primary font-medium hover:underline">Sign up here</Link>
+        <p className="text-center text-[13px]" style={{ color: 'var(--color-text-3)' }}>
+          Don't have an account?{' '}
+          <Link href="/signup" className="font-medium" style={{ color: 'var(--color-ember-text)' }}>Sign up</Link>
         </p>
       </div>
     </div>

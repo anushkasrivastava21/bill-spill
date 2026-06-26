@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bill Spill — Design System</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ========== TOKENS ========== */
+:root {
+  --font: 'DM Sans', system-ui, sans-serif;
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --ember: #D4613B;
+  --ember-hover: #C0552F;
+  --ember-subtle: #D4613B;
+}
+
+[data-theme="light"] {
+  --bg-page: #F6F4F0;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-inset: #EFECE6;
+  --bg-accent: #FDF0EB;
+  --text-1: #1A1816;
+  --text-2: #6B6560;
+  --text-3: #9C958D;
+  --border: #E5E0D8;
+  --border-subtle: #EDE9E3;
+  --ember-bg: rgba(212,97,59,0.08);
+  --ember-text: #B34D2A;
+  --green-bg: rgba(61,148,82,0.08);
+  --green-text: #2D8A4E;
+  --red-bg: rgba(204,60,52,0.08);
+  --red-text: #C43C34;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 0.5px rgba(0,0,0,0.03);
+  --shadow-elevated: 0 4px 12px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.03);
+  --toggle-bg: var(--bg-inset);
+  --toggle-fg: var(--bg-card);
+}
+
+[data-theme="dark"] {
+  --bg-page: #111110;
+  --bg-card: #1A1918;
+  --bg-elevated: #222120;
+  --bg-inset: #161514;
+  --bg-accent: #1F1714;
+  --text-1: #EEEBE7;
+  --text-2: #8A8580;
+  --text-3: #5C5752;
+  --border: #2A2826;
+  --border-subtle: #222120;
+  --ember-bg: rgba(212,97,59,0.12);
+  --ember-text: #E8875F;
+  --green-bg: rgba(61,148,82,0.10);
+  --green-text: #5EC47A;
+  --red-bg: rgba(204,60,52,0.10);
+  --red-text: #E86B63;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0.5px rgba(255,255,255,0.03);
+  --shadow-elevated: 0 4px 12px rgba(0,0,0,0.3), 0 0 0 0.5px rgba(255,255,255,0.04);
+  --toggle-bg: var(--bg-inset);
+  --toggle-fg: var(--bg-elevated);
+}
+
+/* ========== RESET ========== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg-page);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== LAYOUT ========== */
+.page { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ========== THEME TOGGLE ========== */
+.top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:48px; }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-mark { width:32px; height:32px; background:var(--ember); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; }
+.logo-mark i { font-size:16px; color:#fff; }
+.logo-text { font-size:17px; font-weight:600; letter-spacing:-0.3px; color:var(--text-1); }
+
+.theme-toggle {
+  display:flex; align-items:center; gap:0;
+  background:var(--toggle-bg); border-radius:20px; padding:3px;
+  border:0.5px solid var(--border);
+}
+.theme-toggle button {
+  background:none; border:none; cursor:pointer;
+  width:32px; height:28px; border-radius:17px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--text-3); font-size:15px;
+  transition:all 0.25s;
+  font-family:var(--font);
+}
+.theme-toggle button.active {
+  background:var(--toggle-fg);
+  color:var(--text-1);
+  box-shadow:0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ========== SECTION LABELS ========== */
+.section { margin-bottom:40px; }
+.section-label {
+  font-size:11px; font-weight:500; text-transform:uppercase;
+  letter-spacing:1.8px; color:var(--text-3); margin-bottom:16px;
+}
+
+/* ========== PALETTE DISPLAY ========== */
+.palette { display:flex; gap:6px; }
+.palette-swatch {
+  flex:1; height:56px; border-radius:var(--radius-sm);
+  display:flex; align-items:flex-end; padding:6px 8px;
+  font-size:9px; font-weight:500; letter-spacing:0.3px;
+}
+.palette-swatch.on-dark { color:rgba(255,255,255,0.7); }
+.palette-swatch.on-light { color:rgba(0,0,0,0.5); }
+
+/* ========== CARDS ========== */
+.card {
+  background:var(--bg-card);
+  border:0.5px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-card);
+  transition:background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stat-card { padding:18px 20px; }
+.stat-label { font-size:12px; color:var(--text-3); margin-bottom:6px; font-weight:400; }
+.stat-value { font-size:24px; font-weight:600; letter-spacing:-0.5px; color:var(--text-1); }
+.stat-value .currency { font-size:14px; color:var(--text-3); font-weight:400; }
+.stat-tag {
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:11px; font-weight:500; padding:2px 8px;
+  border-radius:6px; margin-top:6px;
+}
+.tag-green { background:var(--green-bg); color:var(--green-text); }
+.tag-red { background:var(--red-bg); color:var(--red-text); }
+
+/* ========== CHART ========== */
+.chart-card { padding:20px; }
+.chart-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.chart-title { font-size:13px; color:var(--text-2); font-weight:400; }
+.chart-pills { display:flex; gap:4px; }
+.chart-pill {
+  font-size:11px; padding:4px 10px; border-radius:6px;
+  background:none; border:0.5px solid var(--border); color:var(--text-3);
+  cursor:pointer; font-family:var(--font); font-weight:500;
+  transition:all 0.2s;
+}
+.chart-pill.active { background:var(--ember-bg); color:var(--ember-text); border-color:transparent; }
+.bars { display:flex; align-items:flex-end; gap:6px; height:100px; }
+.bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.bar {
+  width:100%; border-radius:4px 4px 2px 2px;
+  transition:height 0.4s ease;
+}
+.bar-month { font-size:10px; color:var(--text-3); }
+
+/* ========== EXPENSE LIST ========== */
+.list-card { overflow:hidden; }
+.list-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px; border-bottom:0.5px solid var(--border);
+}
+.list-title { font-size:13px; font-weight:500; color:var(--text-2); }
+.list-action {
+  font-size:12px; color:var(--ember-text); font-weight:500;
+  cursor:pointer; background:none; border:none; font-family:var(--font);
+}
+.expense-row {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 20px;
+  border-bottom:0.5px solid var(--border-subtle);
+  transition:background 0.15s;
+}
+.expense-row:last-child { border-bottom:none; }
+.expense-row:hover { background:var(--bg-inset); }
+.exp-icon {
+  width:36px; height:36px; border-radius:var(--radius-sm);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.exp-icon i { font-size:16px; }
+.exp-body { flex:1; min-width:0; }
+.exp-name { font-size:13px; font-weight:500; color:var(--text-1); }
+.exp-meta { font-size:11px; color:var(--text-3); margin-top:1px; }
+.exp-amount { font-size:13px; font-weight:600; text-align:right; white-space:nowrap; }
+.exp-split { font-size:10px; color:var(--text-3); text-align:right; margin-top:1px; }
+
+/* ========== SETTLE CARD ========== */
+.settle-card { padding:20px; }
+.settle-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 0;
+  border-bottom:0.5px solid var(--border-subtle);
+}
+.settle-row:last-child { border-bottom:none; }
+.av {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:600; flex-shrink:0;
+}
+.settle-arrow { color:var(--text-3); font-size:14px; }
+.settle-amt { margin-left:auto; font-size:13px; font-weight:600; color:var(--ember-text); }
+.settle-btn {
+  margin-left:8px; font-size:11px; font-weight:500;
+  padding:5px 12px; border-radius:6px;
+  background:var(--ember); color:#fff; border:none;
+  cursor:pointer; font-family:var(--font);
+  transition:background 0.15s;
+}
+.settle-btn:hover { background:var(--ember-hover); }
+
+/* ========== BUTTONS ========== */
+.btn-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.btn {
+  padding:11px 20px; border-radius:var(--radius-sm); font-size:13px;
+  font-weight:500; text-align:center; cursor:pointer;
+  font-family:var(--font); border:none; transition:all 0.15s;
+}
+.btn:active { transform:scale(0.98); }
+.btn-fill { background:var(--ember); color:#fff; }
+.btn-fill:hover { background:var(--ember-hover); }
+.btn-outline {
+  background:none; color:var(--text-1);
+  border:0.5px solid var(--border);
+}
+.btn-outline:hover { background:var(--bg-inset); }
+
+/* ========== INPUTS ========== */
+.input-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.input-field {
+  padding:10px 14px; border-radius:var(--radius-sm);
+  background:var(--bg-inset); border:0.5px solid var(--border);
+  font-size:13px; color:var(--text-1); font-family:var(--font);
+  outline:none; transition:border-color 0.2s;
+  width:100%;
+}
+.input-field:focus { border-color:var(--ember); }
+.input-field::placeholder { color:var(--text-3); }
+
+/* ========== SPLIT SELECTOR ========== */
+.split-tabs {
+  display:flex; gap:0; background:var(--bg-inset);
+  border-radius:var(--radius-sm); padding:3px;
+  border:0.5px solid var(--border);
+}
+.split-tab {
+  flex:1; padding:8px 0; text-align:center;
+  font-size:12px; font-weight:500; color:var(--text-3);
+  border-radius:6px; cursor:pointer; border:none;
+  background:none; font-family:var(--font);
+  transition:all 0.2s;
+}
+.split-tab.active {
+  background:var(--bg-card);
+  color:var(--text-1);
+  box-shadow:0 1px 2px rgba(0,0,0,0.06);
+}
+
+/* ========== GROUP CARD ========== */
+.group-row {
+  display:flex; align-items:center; gap:12px;
+  padding:16px 20px;
+}
+.group-emoji { font-size:24px; line-height:1; }
+.group-body { flex:1; }
+.group-name { font-size:14px; font-weight:500; color:var(--text-1); }
+.group-sub { font-size:11px; color:var(--text-3); margin-top:2px; }
+.group-avatars { display:flex; }
+.group-avatars .av { margin-left:-6px; border:2px solid var(--bg-card); }
+.group-avatars .av:first-child { margin-left:0; }
+
+/* ========== MINI CHART (DONUT) ========== */
+.donut-section { display:flex; align-items:center; gap:24px; padding:20px; }
+.donut-wrap { position:relative; width:100px; height:100px; flex-shrink:0; }
+.donut-center {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.donut-val { font-size:16px; font-weight:600; color:var(--text-1); }
+.donut-lbl { font-size:10px; color:var(--text-3); }
+.donut-legend { display:flex; flex-direction:column; gap:8px; flex:1; }
+.legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-2); }
+.legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.legend-val { margin-left:auto; font-weight:500; color:var(--text-1); font-size:12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-mark"><i class="ti ti-receipt-2"></i></div>
+      <div class="logo-text">Bill Spill</div>
+    </div>
+    <div class="theme-toggle">
+      <button id="btn-light" onclick="setTheme('light')"><i class="ti ti-sun"></i></button>
+      <button id="btn-dark" class="active" onclick="setTheme('dark')"><i class="ti ti-moon"></i></button>
+    </div>
+  </div>
+
+  <!-- Palette -->
+  <div class="section">
+    <div class="section-label">Palette</div>
+    <div class="palette">
+      <div class="palette-swatch on-light" style="background:#D4613B;">Ember</div>
+      <div class="palette-swatch on-light" style="background:#E8976E;">Coral</div>
+      <div class="palette-swatch on-light" style="background:#D4943A;">Amber</div>
+      <div class="palette-swatch on-light" style="background:#E6C47A;">Sand</div>
+      <div class="palette-swatch on-dark" style="background:#F6F4F0;border:0.5px solid #E5E0D8;">Bone</div>
+      <div class="palette-swatch on-dark" style="background:#1A1918;border:0.5px solid #2A2826;">Surface</div>
+      <div class="palette-swatch on-dark" style="background:#111110;border:0.5px solid #2A2826;">Base</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="section">
+    <div class="section-label">Dashboard</div>
+    <div class="stat-grid">
+      <div class="card stat-card">
+        <div class="stat-label">You owe</div>
+        <div class="stat-value"><span class="currency">₹</span>2,340</div>
+        <div class="stat-tag tag-red">3 pending</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-label">You're owed</div>
+        <div class="stat-value"><span class="currency">₹</span>1,580</div>
+        <div class="stat-tag tag-green">2 incoming</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="section">
+    <div class="card chart-card">
+      <div class="chart-header">
+        <div class="chart-title">Group spending</div>
+        <div class="chart-pills">
+          <button class="chart-pill active">6M</button>
+          <button class="chart-pill">1Y</button>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="bar-col"><div class="bar" style="height:30%;background:var(--ember);opacity:0.25;"></div><div class="bar-month">Jan</div></div>
+        <div class="bar-col"><div class="bar" style="height:48%;background:var(--ember);opacity:0.35;"></div><div class="bar-month">Feb</div></div>
+        <div class="bar-col"><div class="bar" style="height:38%;background:var(--ember);opacity:0.4;"></div><div class="bar-month">Mar</div></div>
+        <div class="bar-col"><div class="bar" style="height:65%;background:var(--ember);opacity:0.55;"></div><div class="bar-month">Apr</div></div>
+        <div class="bar-col"><div class="bar" style="height:52%;background:var(--ember);opacity:0.7;"></div><div class="bar-month">May</div></div>
+        <div class="bar-col"><div class="bar" style="height:88%;background:var(--ember);opacity:1;"></div><div class="bar-month">Jun</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expense list -->
+  <div class="section">
+    <div class="section-label">Expenses</div>
+    <div class="card list-card">
+      <div class="list-header">
+        <div class="list-title">Recent</div>
+        <button class="list-action">View all</button>
+      </div>
+      <div class="expense-row">
+        <div class="exp-icon" style="background:var(--ember-bg);"><i class="ti ti-tools-kitchen-2" style="color:var(--ember-text);"></i></div>
+        <div class="exp-body">
+          <div class="exp-name">Dinner at BBQ Nation</div>
+          <div class="exp-meta">Anushka paid · Jun 24</div>
+        </div>
+        <div>
+          <div class="exp-amount" style="color:var(--text-1);">₹1,200</div>
+          <div class="exp-split">You owe ₹300</div>
+        </div>
+      </div>
+      <div class="expense-row">
+        <div class="exp-icon" style="background:var(--green-bg);"><i class="ti ti-car" style="color:var(--green-text);"></i></div>
+        <div class="exp-body">
+          <div class="exp-name">Uber to campus</div>
+          <div class="exp-meta">Riya paid · Jun 23</div>
+        </div>
+        <div>
+          <div class="exp-amount" style="color:var(--text-1);">₹340</div>
+          <div class="exp-split">You owe ₹170</div>
+        </div>
+      </div>
+      <div class="expense-row">
+        <div class="exp-icon" style="background:var(--ember-bg);"><i class="ti ti-movie" style="color:var(--ember-text);"></i></div>
+        <div class="exp-body">
+          <div class="exp-name">Movie tickets</div>
+          <div class="exp-meta">Aditya paid · Jun 22</div>
+        </div>
+        <div>
+          <div class="exp-amount" style="color:var(--text-1);">₹800</div>
+          <div class="exp-split">You owe ₹200</div>
+        </div>
+      </div>
+      <div class="expense-row">
+        <div class="exp-icon" style="background:var(--green-bg);"><i class="ti ti-basket" style="color:var(--green-text);"></i></div>
+        <div class="exp-body">
+          <div class="exp-name">Groceries</div>
+          <div class="exp-meta">You paid · Jun 20</div>
+        </div>
+        <div>
+          <div class="exp-amount" style="color:var(--green-text);">₹640</div>
+          <div class="exp-split">You're owed ₹480</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settle up -->
+  <div class="section">
+    <div class="section-label">Settle up</div>
+    <div class="card settle-card">
+      <div class="settle-row">
+        <div class="av" style="background:var(--ember-bg);color:var(--ember-text);">R</div>
+        <div style="font-size:13px;"><span style="font-weight:500;">Riya</span> <span style="color:var(--text-3);">owes you</span></div>
+        <div class="settle-amt">₹580</div>
+        <button class="settle-btn">Remind</button>
+      </div>
+      <div class="settle-row">
+        <div class="av" style="background:var(--red-bg);color:var(--red-text);">A</div>
+        <div style="font-size:13px;"><span style="color:var(--text-3);">You owe</span> <span style="font-weight:500;">Aditya</span></div>
+        <div class="settle-amt">₹420</div>
+        <button class="settle-btn">Pay</button>
+      </div>
+      <div class="settle-row">
+        <div class="av" style="background:var(--green-bg);color:var(--green-text);">S</div>
+        <div style="font-size:13px;"><span style="font-weight:500;">Sanya</span> <span style="color:var(--text-3);">owes you</span></div>
+        <div class="settle-amt">₹150</div>
+        <button class="settle-btn">Remind</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category breakdown -->
+  <div class="section">
+    <div class="section-label">Category breakdown</div>
+    <div class="card">
+      <div class="donut-section">
+        <div class="donut-wrap">
+          <svg viewBox="0 0 100 100" width="100" height="100">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--border)" stroke-width="10"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="var(--ember)" stroke-width="10"
+              stroke-dasharray="95 144" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#D4943A" stroke-width="10"
+              stroke-dasharray="55 184" stroke-dashoffset="-95" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#E8976E" stroke-width="10"
+              stroke-dasharray="40 199" stroke-dashoffset="-150" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-val">₹8.4k</div>
+            <div class="donut-lbl">This month</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--ember);"></div>Food<div class="legend-val">₹3,340</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#D4943A;"></div>Transport<div class="legend-val">₹1,940</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:#E8976E;"></div>Entertainment<div class="legend-val">₹1,400</div></div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--border);"></div>Other<div class="legend-val">₹1,720</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Components -->
+  <div class="section">
+    <div class="section-label">Components</div>
+    <div class="btn-row" style="margin-bottom:12px;">
+      <button class="btn btn-fill">Add expense</button>
+      <button class="btn btn-outline">Create group</button>
+    </div>
+    <div class="input-row" style="margin-bottom:12px;">
+      <input class="input-field" placeholder="Expense name" />
+      <input class="input-field" placeholder="₹ Amount" />
+    </div>
+    <div class="split-tabs">
+      <button class="split-tab active">Equal</button>
+      <button class="split-tab">By amount</button>
+      <button class="split-tab">By %</button>
+      <button class="split-tab">By items</button>
+    </div>
+  </div>
+
+  <!-- Group card -->
+  <div class="section">
+    <div class="section-label">Groups</div>
+    <div class="card">
+      <div class="group-row" style="border-bottom:0.5px solid var(--border-subtle);">
+        <div class="group-emoji">🏠</div>
+        <div class="group-body">
+          <div class="group-name">Flat expenses</div>
+          <div class="group-sub">3 members · You owe ₹840</div>
+        </div>
+        <div class="group-avatars">
+          <div class="av" style="background:var(--ember-bg);color:var(--ember-text);">A</div>
+          <div class="av" style="background:var(--green-bg);color:var(--green-text);">R</div>
+          <div class="av" style="background:var(--red-bg);color:var(--red-text);">S</div>
+        </div>
+      </div>
+      <div class="group-row">
+        <div class="group-emoji">🎓</div>
+        <div class="group-body">
+          <div class="group-name">Campus squad</div>
+          <div class="group-sub">5 members · Settled up</div>
+        </div>
+        <div class="group-avatars">
+          <div class="av" style="background:var(--ember-bg);color:var(--ember-text);">K</div>
+          <div class="av" style="background:var(--green-bg);color:var(--green-text);">P</div>
+          <div class="av" style="background:var(--red-bg);color:var(--red-text);">D</div>
+          <div class="av" style="background:var(--ember-bg);color:var(--ember-text);">+2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-light').classList.toggle('active', t === 'light');
+  document.getElementById('btn-dark').classList.toggle('active', t === 'dark');
+}
+
+document.querySelectorAll('.chart-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.chart-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.split-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.split-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
